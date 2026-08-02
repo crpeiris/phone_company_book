@@ -15,6 +15,13 @@ def aboutus(request):
 def reviews(request):
     return render(request, 'store/reviews.html', {'title': 'Reviews'})
 
-# This view returns the 'store/shop.html' file.
+# The Updated version in chapter 6 -  This view returns the 'store/shop.html' file.
 def shop(request):
-    return render(request, 'store/shop.html', {'title': 'All Phones'})
+    products = Product.objects.all()
+    return render(request, 'store/shop.html', {'products': products, 'title': 'All Phones'})
+
+
+from django.shortcuts import render
+from .models import Product
+
+

@@ -1,26 +1,36 @@
 {% extends 'store/base.html' %}
 <!-- Header-->
 {% block content %}
+<!-- Section-->
+<section class="py-5">
+{% if not products %}
+<h1> Products will be available soon.....!</h1>
+{% endif %}
 
 
   <div class="container px-4 px-lg-5 mt-5">
     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+      {% for product in products %}
+     
+     
         <div class="col mb-5">
           <div class="card h-100">
+            {% if product.is_sale %}
             <!--Sales badge-->
             <div class= "badge bg-black text-white position-absolute" style= "top: 0.5rem; right: 0.5 rem">
               Sale!!!
           </div>
+            {% endif %}
 
 
           <!-- Product image-->
-          <img class="card-img-top" src="" alt="..." />
+          <img class="card-img-top" src="{{product.image.url}}" alt="..." />
          
           <!-- Product details-->
           <div class="card-body p-4">
             <div class="text-center">
               <!-- Product name-->
-              <h5 class="fw-bolder"> Google Pixel 9</h5>
+              <h5 class="fw-bolder">{{product.name}}</h5>
 
 
               <div class="d-flex justify-content-center small text-warning mb-2">
@@ -33,10 +43,12 @@
 
 
               <!-- Product price striked if sale-->
-              <strike> $Product price </strike>
-              &nbsp; Product sale_price
+              {% if product.is_sale %}
+              <strike> ${{product.price}} </strike>
+              {% endif %}
+              &nbsp; ${{product.sale_price}}
               <br />
-              Product description
+              {{product.description}}
             </div>
           </div>
 
@@ -49,6 +61,10 @@
           </div>
         </div>
       </div>
+
+
+   
+      {% endfor %}
     </div>
   </div>
 </section>
