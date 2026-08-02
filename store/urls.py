@@ -7,5 +7,6 @@ urlpatterns = [
     path('', views.storehome, name='storehome'),        # (1)
     path('aboutus', views.aboutus, name='aboutus'),     # (2)
     path('reviews', views.reviews, name='reviews'),     # (3)
+    path('shop', views.shop, name='shop'),
 ]
 urlpatterns += staticfiles_urlpatterns()
