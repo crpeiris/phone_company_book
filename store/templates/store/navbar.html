@@ -30,21 +30,18 @@
             <a class="nav-link active" aria-current="page" href="/store/register">Signup</a>
           </li>
           <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              id="navbarDropdown"
-              href="#"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false">Shop</a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="/store/">All Products</a></li>
-              <li><a href="#!">iPhone</a></li>
-              <li><a href="#!">Android</a></li>
-              <li><a href="#!">Google Pixel</a></li>
-              <li><hr class="dropdown-divider" /></li>
-            </ul>
-          </li>
+   <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Shop</a>
+      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <li><a class="dropdown-item" href="{% url 'shop' %}">All Products</a></li>
+        <li> <a class="dropdown-item" href="{% url 'shop' 'iPhone' %}"> iPhone </a> </li>
+        <li> <a class="dropdown-item" href="{% url 'shop' 'Android' %}"> Android</a> </li>
+        <li> <a class="dropdown-item" href="{% url 'shop' 'Google Pixel' %}"> Google Pixel</a> </li>
+        <li> <a class="dropdown-item" href="{% url 'shop' 'Feature Phones' %}"> Feature Phones </a> </li>
+        </ul>
+        <li><hr class="dropdown-divider" /></li>
+      </ul>
+</li>
+
         </ul>
         <form class="d-flex">
           <button class="btn btn-outline-dark" type="submit">
