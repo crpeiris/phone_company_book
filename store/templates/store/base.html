@@ -25,8 +25,23 @@
 
 
     {% include 'store/navbar.html'%}
+
+    {% if messages %}    
+      {% for message in messages %}
+        <div class="alert alert-dismissable fade show" role="alert">
+          {{message}}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" area-label="Close"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+
     {% include 'store/header.html'%}
 
+
+
+
+
+  
 
     {%block content%}
     {% endblock %}

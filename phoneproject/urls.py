@@ -9,4 +9,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', storeviews.storehome),  # This handles the root URL
     path('store/', include('store.urls')),
+     path('user_accounts/', include('user_accounts.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
