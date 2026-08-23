@@ -166,3 +166,4 @@ def change_password(request):
         return redirect('change_password')
     else:
         return render(request, 'user_accounts/change_password.html', {'title': "Change Password"})
+
