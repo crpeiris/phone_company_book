@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, render, redirect
-from .models import Product, Category, CartItem, Order, OrderProduct
+from .models import Product, Category, CartItem, Order, OrderProduct, Profile
 
 
 # This view returns the 'storehome.html' file.
@@ -126,6 +126,35 @@ def order_details(request, order_id):#Call this view after creating an order
         return redirect('welcome')
 
 from django.http import JsonResponse
+
+@login_required(login_url='login_user')
+def order_list(request):
+    try:
+        orderlist = Order.objects.filter(customer=request.user)
+        return render(request, 'store/order_list.html', {'orderlist': orderlist, 'title': "My Orders"})
+    except Profile.DoesNotExist:
+        messages.error(request, "Orders not found.")
+        return redirect('welcome')
+
+
+@transaction.atomic
+def delete_order(request, order_id):
+    if request.user.is_authenticated:
+        try:
+            order= Order.objects.get(id=order_id)
+    
+            order_items_delete = OrderProduct.objects.filter(order_id = order.id)
+            if order_items_delete:
+                for item in order_items_delete:
+                    item.delete()       
+        
+            order.delete()
+            messages.success(request,  f"Your Order {order_id} deleted. Please create a new order...")
+            return redirect('view_cart')
+
+        except Exception as e:
+            messages.error(request,  f"Your Order {order_id} could not delete. Please contact support center...")
+            return redirect('view_cart') 
 
 
 @login_required

@@ -4,6 +4,10 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+from decouple import config
+STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
+STRIPE_PUBLISHABLE_KEY = config('STRIPE_PUBLISHABLE_KEY')
+STRIPE_WEBHOOK_SECRET = config('STRIPE_WEBHOOK_SECRET')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
@@ -14,8 +18,8 @@ SECRET_KEY = 'django-insecure-vibedi)$sg2c^7#j-&&mmjojlv9_64h5o5(8nosa2h5a_j#fko
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['mistakenly-growing-kiwi.ngrok-free.app', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://mistakenly-growing-kiwi.ngrok-free.app', 'http://127.0.0.1:8000']
 
 # Application definition
 
@@ -28,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'store',
     'user_accounts',
+    'payment_mgt',
 ]
 
 MIDDLEWARE = [

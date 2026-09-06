@@ -60,13 +60,16 @@
           <div class="d-flex justify-content-between mt-4">
             <a href="{% url 'delete_order' order.id %}" class="btn btn-danger">Delete Order</a>
             <a href="{% url 'order_list' %}" class="btn btn-outline-primary">Back to Orders</a>
-           
-            {% if order.status == "unpaid" %}
-            <form method="POST" action="#">
+
+            
+            {% if order.status == "Unpaid" %}
+            <form method="POST" action="{% url 'payment_mgt:create_checkout_session' order.id %}">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-outline-success mt-auto">Go to Payment</button>
             </form>
             {% endif %}
+          </div>
+            
           </div>
         </div>
       </div>

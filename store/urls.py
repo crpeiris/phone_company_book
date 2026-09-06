@@ -14,8 +14,14 @@ urlpatterns = [
     path('view_cart/', views.view_cart, name='view_cart'),
     path('remove_from_cart/<int:item_id>/', views.remove_from_cart, name='remove_from_cart'),
     path('create_order/', views.create_order, name='create_order'),
+    path('create_order/<int:orderid>/', views.create_order, name='create_order_with_id'),
     path('order_details/<int:order_id>', views.order_details, name='order_details'),
-    path('view_cart/update-purchase/', views.update_purchase, name='update_purchase'),
+    path('view_cart/update-purchase/', views.update_purchase, name='update_purchase'),  
+    
+    path('delete_order/<int:order_id>/', views.delete_order, name='delete_order'),
+    path('order_list', views.order_list, name='order_list'),
+    
+
 
 ]
 urlpatterns += staticfiles_urlpatterns()
