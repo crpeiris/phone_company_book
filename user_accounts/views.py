@@ -3,20 +3,21 @@ from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 
-
 from store.models import Profile, Order
 from .forms import SignUpForm
 from django import forms
-
 
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import check_password
 
-
 from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError
 # Create your views here.
+
+# For Dashboard
+from django.urls import reverse
+from django.apps import apps
 
 
 def login_user(request):
@@ -167,3 +168,70 @@ def change_password(request):
     else:
         return render(request, 'user_accounts/change_password.html', {'title': "Change Password"})
 
+
+#For Dashboard
+
+@login_required
+def model_dashboard(request):
+    """Fetches all models and evaluates user permissions for each action."""
+    models_data = []
+    user = request.user  # Get currently logged-in user
+    
+    for model in apps.get_models():
+        app_label = model._meta.app_label
+        model_name = model._meta.model_name
+        
+        # ==================== NEW: PERMISSION CHECKS ====================
+        is_staff = user.is_staff
+        can_create = is_staff and user.has_perm(f"{app_label}.add_{model_name}")
+        can_edit   = is_staff and user.has_perm(f"{app_label}.change_{model_name}")
+        can_delete = is_staff and user.has_perm(f"{app_label}.delete_{model_name}")
+        can_view   = is_staff and user.has_perm(f"{app_label}.view_{model_name}")
+        # =================================================================
+
+        models_data.append({
+            'app_label': app_label,
+            'model_name': model_name,
+            'verbose_name': model._meta.verbose_name.title(),
+            'app_name': model._meta.app_config.verbose_name,
+            
+            # ==================== NEW: PASS FLAGS TO TEMPLATE ====================
+            'can_create': can_create,
+            'can_edit': can_edit,
+            'can_delete': can_delete,
+            'can_view': can_view,
+            # =====================================================================
+        })
+    
+    models_data = sorted(models_data, key=lambda x: (x['app_name'], x['verbose_name']))
+    return render(request, 'user_accounts/dashboard.html', {'models': models_data})
+
+
+@login_required
+def model_action_proxy(request, app_label, model_name, action):
+    """Fallback proxy view to enforce security if a disabled link is manually accessed."""
+    perm_action = action
+    if action == 'edit':
+        perm_action = 'change'
+    elif action == 'create':
+        perm_action = 'add'
+        
+    perm_string = f"{app_label}.{perm_action}_{model_name}"
+    
+    if not (request.user.is_staff and request.user.has_perm(perm_string)):
+        return render(request, 'user_accounts/no_rights.html', {
+            'action': action.title(), 
+            'model': model_name.title()
+        })
+
+    try:
+        if action == 'create':
+            url = reverse(f"admin:{app_label}_{model_name}_add")
+        else:
+            url = reverse(f"admin:{app_label}_{model_name}_changelist")
+        return redirect(url)
+        
+    except Exception:
+        return render(request, 'user_accounts/no_rights.html', {
+            'custom_message': f"The model '{model_name.title()}' is not registered in the Django Admin interface."
+        })

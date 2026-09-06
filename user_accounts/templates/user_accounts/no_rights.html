@@ -1,0 +1,27 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center">
+                <div class="alert alert-danger shadow-sm py-5" role="alert">
+                    <h1 class="display-1 fw-bold">403</h1>
+                    <h3 class="mb-4">Access Denied</h3>
+                    
+                    <p class="lead">
+                        {% if custom_message %}
+                            {{ custom_message }}
+                        {% else %}
+                            You have no rights to <strong>{{ action }}</strong> the <strong>{{ model }}</strong> model.
+                        {% endif %}
+                    </p>
+                    <p class="text-muted mb-4">Please contact your system administrator if you believe this is a mistake.</p>
+                    
+                    <a href="{% url 'model_dashboard' %}" class="btn btn-secondary px-4">Return to Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

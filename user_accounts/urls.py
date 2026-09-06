@@ -13,5 +13,9 @@ urlpatterns = [
     path('edit_userprofile_image', views.edit_userprofile_image, name='edit_userprofile_image'),
     path('edit_userprofile_details', views.edit_userprofile_details, name='edit_userprofile_details'),
     path('change_password', views.change_password, name='change_password'),
+
+    path('dashboard/', views.model_dashboard, name='model_dashboard'),
+    # Proxy route for button clicks
+    path('dashboard/action/<str:app_label>/<str:model_name>/<str:action>/',views.model_action_proxy, name='model_action_proxy'),
 ]
 urlpatterns += staticfiles_urlpatterns()
